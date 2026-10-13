@@ -1,0 +1,7 @@
+# Netlify가 Next.js 런타임을 자동으로 적용한다. 환경 변수는 Netlify UI에서 설정한다(.env.example 참고).
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
