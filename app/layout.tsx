@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeScript } from "@/components/theme-script";
-import { publicEnv } from "@/lib/env";
+import { SITE_URL } from "@/lib/env";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/metadata";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(publicEnv.NEXT_PUBLIC_SITE_URL),
+  metadataBase: new URL(SITE_URL),
   title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,

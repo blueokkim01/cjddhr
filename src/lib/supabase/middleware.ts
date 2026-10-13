@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { publicEnv } from "@/lib/env";
+import { getSupabaseEnv, isSupabaseConfigured } from "@/lib/env";
 import type { Database } from "@/types/database";
 
 // proxy.ts에서 호출한다. 만료된 액세스 토큰을 갱신해 쿠키에 다시 쓰고,
@@ -8,9 +8,15 @@ import type { Database } from "@/types/database";
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // Supabase를 아직 연결하지 않았으면 로그인 자체가 불가능하므로 갱신할 세션도 없다.
+  if (!isSupabaseConfigured) {
+    return { response, userId: null };
+  }
+  const env = getSupabaseEnv();
+
   const supabase = createServerClient<Database>(
-    publicEnv.NEXT_PUBLIC_SUPABASE_URL,
-    publicEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
